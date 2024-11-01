@@ -17,11 +17,11 @@ public class PetOwnersController : ControllerBase
    [HttpGet] // GET /api/petowners/
    public IEnumerable<PetOwner> GetPetOwners()
    {
-      return _context.PetOwners.Include(b => b.pets).ToList();
+      return _context.PetOwners.ToList();
    }
 
    [HttpGet("{PetOwnerId}")]
-   public IActionResult GetBakerById(int PetOwnerId)
+   public IActionResult GetPetOwnerById(int PetOwnerId)
    {
       PetOwner foundPetOwner = _context.PetOwners.SingleOrDefault(p => p.id == PetOwnerId);
 
@@ -33,7 +33,6 @@ public class PetOwnersController : ControllerBase
    public IActionResult createPetOwner([FromBody] PetOwner newPetOwner)
    {
       // INSERT into the context, save changes to the database
-      Console.WriteLine(newPetOwner);
       _context.PetOwners.Add(newPetOwner);
       _context.SaveChanges();
 

@@ -30,16 +30,25 @@ namespace pet_hotel_7._0.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<int?>("PetOwnerid")
-                        .HasColumnType("integer");
+                    b.Property<DateTime?>("checkedInAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("petBreed")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("petColor")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("petOwnerid")
+                        .HasColumnType("integer");
+
                     b.HasKey("id");
 
-                    b.HasIndex("PetOwnerid");
+                    b.HasIndex("petOwnerid");
 
                     b.ToTable("Pets");
                 });
@@ -67,9 +76,13 @@ namespace pet_hotel_7._0.Migrations
 
             modelBuilder.Entity("pet_hotel.Models.Pet", b =>
                 {
-                    b.HasOne("pet_hotel.Models.PetOwner", null)
+                    b.HasOne("pet_hotel.Models.PetOwner", "petOwner")
                         .WithMany("pets")
-                        .HasForeignKey("PetOwnerid");
+                        .HasForeignKey("petOwnerid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("petOwner");
                 });
 
             modelBuilder.Entity("pet_hotel.Models.PetOwner", b =>
